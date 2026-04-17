@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Rule 4: Send via EmailJS
             if (typeof emailjs !== 'undefined') {
                 // Mapping form data (Rule 4: Standard template variables used)
-                emailjs.sendForm('service_placeholder', 'template_placeholder', form)
+                emailjs.sendForm('service_ui7w1ja', 'template_dz6vjmn', form)
                     .then(() => {
                         // Rule 6: Success Handling
                         alert('Your consultation request has been submitted successfully! Our expert physicians will call you shortly.');
