@@ -90,43 +90,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- UNIVERSAL FORM SUBMISSION (EmailJS) ---
+    // Rule 5: Targeting all forms on the page (popup, section, etc.)
     const forms = document.querySelectorAll('form');
     
     forms.forEach(form => {
         form.addEventListener('submit', (e) => {
-            e.preventDefault(); // Rule 3: Prevents page reload
+            e.preventDefault(); // Rule 4: Prevents page reload
             
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerText;
             
-            // Show sending status
+            // Rule 3: Required field validation
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Rule 4: Visual feedback while sending
             submitBtn.innerText = 'Sending Request...';
             submitBtn.disabled = true;
 
-            // Rule 4: Send via EmailJS
+            /* 
+               Rule 1 & 6: EXACT FIELD MAPPING VERIFICATION
+               The EmailJS sendForm method uses the 'name' attributes of input fields 
+               as keys for the templateParams object. 
+               
+               Mapped Keys -> Template Variables:
+               - name="full_name" -> {{full_name}}
+               - name="phone"     -> {{phone}}
+               - name="email"     -> {{email}}
+               - name="condition" -> {{condition}}
+               - name="message"   -> {{message}}
+            */
+
             if (typeof emailjs !== 'undefined') {
-                // Mapping form data (Rule 4: Standard template variables used)
+                // Rule 3: Using Service ID and Template ID (template_dz6vjmn)
                 emailjs.sendForm('service_ui7w1ja', 'template_dz6vjmn', form)
                     .then(() => {
-                        // Rule 6: Success Handling
+                        // Rule 4: Success Handling
                         alert('Your consultation request has been submitted successfully! Our expert physicians will call you shortly.');
-                        form.reset(); // Rule 6: Internal Reset
+                        form.reset(); // Rule 4: Form reset after success
                         submitBtn.innerText = originalText;
                         submitBtn.disabled = false;
                         
-                        // Close modal if open
+                        // Close modal if triggered from popup
                         if(modal && modal.style.display === 'flex') closeModal();
                     }, (error) => {
-                        // Rule 6: Failure Handling
+                        // Rule 4: Failure Handling
                         console.error('EmailJS Error:', error);
-                        alert('Submission failed. Please check your internet connection or call us directly at +91 78999 03943.');
+                        alert('Submission failed. Reason: ' + (error.text || 'Unknown error') + '. Please try again or call us at +91 78999 03943.');
                         submitBtn.innerText = originalText;
                         submitBtn.disabled = false;
                     });
             } else {
-                // Rule 7: Fallback if JS error blocks lib
-                console.error('EmailJS library not detected.');
-                alert('We are experiencing technical issues with the form. Please call us at +91 78999 03943.');
+                console.error('EmailJS not loaded');
+                alert('Form service is currently unavailable. Please call us directly at +91 78999 03943.');
                 submitBtn.innerText = originalText;
                 submitBtn.disabled = false;
             }

@@ -18,6 +18,12 @@
 }
 
 /* Base Styles */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -222,11 +228,26 @@ h1, h2, h3, h4 {
     font-weight: 600;
 }
 
-.form-row {
+.form-row-multi {
     display: grid;
-    grid-template-columns: repeat(3, 1fr) auto;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.form-row-msg {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
     gap: 20px;
     align-items: flex-end;
+}
+
+textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: inherit;
+    resize: none;
 }
 
 .btn-full {
@@ -234,7 +255,7 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 992px) {
-    .form-row {
+    .form-row-multi, .form-row-msg {
         grid-template-columns: 1fr;
     }
 }
@@ -864,6 +885,15 @@ h1, h2, h3, h4 {
     border-radius: 30px;
     position: relative;
     animation: modalSlideUp 0.4s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
 }
 
 @keyframes modalSlideUp {
@@ -873,11 +903,25 @@ h1, h2, h3, h4 {
 
 .modal-close {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    border-radius: 50%;
     font-size: 24px;
     cursor: pointer;
-    color: var(--text-light);
+    color: var(--text-dark);
+    z-index: 10;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background: var(--primary);
+    color: white;
 }
 
 .modal-header { text-align: center; margin-bottom: 30px; }
@@ -964,8 +1008,36 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 768px) {
-    .section { padding: 60px 0; }
+    .section { padding: 50px 0; }
     .header-cta .phone-link { display: none; }
-    .hero-content h1 { font-size: 36px; }
-    .whatsapp-float { bottom: 30px; right: 30px; width: 55px; height: 55px; font-size: 30px; }
+    .hero-content h1 { font-size: 32px; }
+    .hero-sub { font-size: 18px; }
+    .whatsapp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 25px; }
+    
+    .appointment-box { padding: 25px; border-radius: 20px; }
+    .appointment-header h2 { font-size: 24px; }
+    
+    .root-cause-premium-layout { gap: 30px; }
+    .image-overlay-card { position: relative; right: 0; bottom: 0; margin-top: 15px; width: 100%; max-width: none; }
+    
+    .kshara-karma-content-box { padding: 20px; border-radius: 20px; }
+    
+    .panchakarma-grid { gap: 20px; }
+    .therapy-card-box { flex-direction: column; }
+    .therapy-image { width: 100%; height: 200px; }
+    
+    .comfort-layout { flex-direction: column; gap: 20px; }
+    .comfort-divider { display: none; }
+    
+    .lifestyle-grid { grid-template-columns: 1fr; }
+    .life-tip { padding: 12px 20px; font-size: 14px; }
+    
+    .footer-grid { gap: 40px; }
+}
+
+@media (max-width: 480px) {
+    .hero-btns { flex-direction: column; width: 100%; }
+    .hero-btns .btn { width: 100%; }
+    .btn { padding: 14px 24px; font-size: 15px; }
+    .trust-card { padding: 30px 20px; }
 }
