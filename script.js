@@ -66,42 +66,71 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- SCROLL REVEAL ANIMATIONS (Why Choose Cards) ---
-    const revealCards = () => {
-        const cards = document.querySelectorAll('.why-card');
-        const triggerBottom = window.innerHeight / 5 * 4;
+    // --- SCROLL REVEAL ANIMATIONS ---
+    const revealElements = () => {
+        const elements = document.querySelectorAll('.why-card, .root-cause-image, .root-cause-content, .herbal-card, .therapy-card-box, .comfort-item, .specialist-image, .diet-item, .trust-card, .life-tip');
+        const triggerBottom = window.innerHeight / 5 * 4.5; // Slightly higher trigger for smoother reveal
 
-        cards.forEach(card => {
-            const cardTop = card.getBoundingClientRect().top;
-            if (cardTop < triggerBottom) {
-                card.classList.add('reveal');
+        elements.forEach(el => {
+            const elTop = el.getBoundingClientRect().top;
+            if (elTop < triggerBottom) {
+                el.classList.add('reveal');
+                
+                // Specific transitions if not already in CSS
+                if(!el.classList.contains('why-card')) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }
             }
         });
     };
 
-    window.addEventListener('scroll', revealCards);
-    revealCards(); // Run once on load
+    window.addEventListener('scroll', revealElements);
+    revealElements(); // Run once on load
 
 
-    // --- FORM SUBMISSION (MOCK) ---
-    const form = modal.querySelector('form');
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerText;
-        
-        submitBtn.innerText = 'Sending Request...';
-        submitBtn.disabled = true;
+    // --- UNIVERSAL FORM SUBMISSION (EmailJS) ---
+    const forms = document.querySelectorAll('form');
+    
+    forms.forEach(form => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Rule 3: Prevents page reload
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerText;
+            
+            // Show sending status
+            submitBtn.innerText = 'Sending Request...';
+            submitBtn.disabled = true;
 
-        // Simulate network delay
-        setTimeout(() => {
-            alert('Your consultation request has been submitted successfully! Our expert physicians will call you shortly.');
-            form.reset();
-            submitBtn.innerText = originalText;
-            submitBtn.disabled = false;
-            closeModal();
-        }, 1500);
+            // Rule 4: Send via EmailJS
+            if (typeof emailjs !== 'undefined') {
+                // Mapping form data (Rule 4: Standard template variables used)
+                emailjs.sendForm('service_placeholder', 'template_placeholder', form)
+                    .then(() => {
+                        // Rule 6: Success Handling
+                        alert('Your consultation request has been submitted successfully! Our expert physicians will call you shortly.');
+                        form.reset(); // Rule 6: Internal Reset
+                        submitBtn.innerText = originalText;
+                        submitBtn.disabled = false;
+                        
+                        // Close modal if open
+                        if(modal && modal.style.display === 'flex') closeModal();
+                    }, (error) => {
+                        // Rule 6: Failure Handling
+                        console.error('EmailJS Error:', error);
+                        alert('Submission failed. Please check your internet connection or call us directly at +91 78999 03943.');
+                        submitBtn.innerText = originalText;
+                        submitBtn.disabled = false;
+                    });
+            } else {
+                // Rule 7: Fallback if JS error blocks lib
+                console.error('EmailJS library not detected.');
+                alert('We are experiencing technical issues with the form. Please call us at +91 78999 03943.');
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }
+        });
     });
 
 });
