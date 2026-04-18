@@ -616,9 +616,9 @@ textarea {
     font-weight: 700;
 }
 
-.col-feature { flex: 1.2; font-weight: 600; }
-.col-kshara { flex: 1; text-align: center; color: var(--primary); font-weight: 700; }
-.col-surgery { flex: 1; text-align: center; color: var(--text-light); }
+.col-feature { flex: 1.2; font-weight: 600; padding-right: 10px; }
+.col-kshara { flex: 1; text-align: center; color: var(--primary); font-weight: 700; font-size: 14px; }
+.col-surgery { flex: 1; text-align: center; color: var(--text-light); font-size: 14px; }
 
 .comp-row.head div { color: white !important; text-align: center; }
 .comp-row.head .col-feature { text-align: left; }
@@ -634,14 +634,22 @@ textarea {
 }
 
 @media (max-width: 768px) {
-    .kshara-card-grid { grid-template-columns: 1fr; }
-    .kshara-premium-card { padding: 30px 20px; border-radius: 20px; }
-    .comp-table { font-size: 14px; }
-    .col-feature { flex: 1.5; }
-    .comp-row { padding: 12px 10px; }
+    .kshara-card-grid { grid-template-columns: 1fr; gap: 25px; }
+    .kshara-premium-card { padding: 30px 15px; border-radius: 20px; width: 100%; }
+    
+    .comparison-modern { padding: 20px 10px; margin-top: 25px; }
+    .comp-row { padding: 12px 0px; font-size: 13px; gap: 5px; flex-wrap: wrap; }
+    .comp-row.head { padding: 10px 5px; }
+    
+    .col-feature { flex: 1 0 100%; margin-bottom: 5px; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+    .col-kshara { flex: 1; text-align: center; padding: 5px; border-right: 1px solid #eee; }
+    .col-surgery { flex: 1; text-align: center; padding: 5px; }
+    
+    .comp-row.head .col-feature { border: none; margin-bottom: 0; padding-bottom: 0; }
+    
     .kshara-quick-info { flex-direction: column; gap: 12px; }
     .kshara-action { text-align: center; }
-    .kshara-action .btn { width: 100%; max-width: 320px; }
+    .kshara-action .btn { width: 100%; max-width: 100%; }
 }
 
 /* Herbal Medicine */
@@ -1200,8 +1208,8 @@ textarea {
     }
     .hero-sub { font-size: 16px; text-align: center; margin-bottom: 12px; }
     .hero-para { text-align: center; font-size: 15px; margin-bottom: 25px; line-height: 1.5; }
-    .hero-btns { flex-direction: column; width: 100%; gap: 12px; margin-top: 20px; align-items: center; }
-    .hero-btns .btn { width: 100%; max-width: 320px; margin-top: 0; padding: 14px 20px; }
+    .hero-btns { flex-direction: column; width: 100%; gap: 10px; margin-top: 15px; align-items: center; }
+    .hero-btns .btn { width: 100%; max-width: 320px; margin-top: 0 !important; padding: 12px 20px; font-size: 15px; }
     
     .section { padding: 40px 0; } /* More compact section padding */
     .section h2 { font-size: 24px; text-align: center; margin-bottom: 12px; }
