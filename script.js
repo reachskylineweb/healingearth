@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- SCROLL REVEAL ANIMATIONS ---
     const revealElements = () => {
-        const elements = document.querySelectorAll('.why-card, .root-cause-image, .root-cause-content, .herbal-card, .therapy-card-box, .comfort-item, .specialist-image, .diet-item, .trust-card, .life-tip');
+        const elements = document.querySelectorAll('.why-card, .root-cause-image, .root-cause-content, .herbal-card, .therapy-card-box, .comfort-item, .specialist-image, .diet-item, .trust-card, .life-tip, .kshara-premium-card');
         const triggerBottom = window.innerHeight / 5 * 4.5; // Slightly higher trigger for smoother reveal
 
         elements.forEach(el => {
