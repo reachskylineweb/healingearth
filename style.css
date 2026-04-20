@@ -312,17 +312,30 @@ textarea {
     text-align: center;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid transparent;
 }
 
 .trust-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(232, 93, 42, 0.1);
+    border-color: rgba(232, 93, 42, 0.2);
 }
 
 .trust-card i {
     font-size: 40px;
     color: var(--primary);
     margin-bottom: 20px;
+    transition: var(--transition);
 }
+
+.trust-card:hover i {
+    transform: scale(1.1);
+    color: var(--accent-teal);
+}
+
 
 /* Expert Section */
 .expert-box {
@@ -531,18 +544,33 @@ textarea {
     border-radius: 40px;
     box-shadow: 0 30px 100px rgba(0,0,0,0.08);
     overflow: hidden;
-    padding: 60px;
+    padding: 30px 40px; /* Reduced from 40px */
     border: 1px solid rgba(0,0,0,0.03);
     position: relative;
     z-index: 5;
 }
 
+
 .kshara-card-grid {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 80px;
-    align-items: center;
+    gap: 40px; /* Reduced from 80px */
+    align-items: flex-start;
 }
+
+
+.kshara-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.kshara-details .detail-header h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: var(--secondary);
+}
+
 
 .kshara-visual {
     width: 100%;
@@ -596,35 +624,39 @@ textarea {
 }
 
 .comparison-modern {
-    margin-top: 40px;
+    margin-top: 15px; /* Reduced from 25px */
     background: #FFFBFA;
     border-radius: 20px;
-    padding: 30px;
+    padding: 15px 20px; /* Reduced from 25px */
     border: 1px solid #FFEBE5;
 }
 
 .comparison-modern h4 {
-    font-size: 18px;
-    margin-bottom: 25px;
+    font-size: 16px;
+    margin-bottom: 15px; /* Reduced from 20px */
     color: var(--secondary);
     text-align: center;
 }
 
+
+
 .comp-table {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px; /* Reduced from 12px */
 }
+
 
 .comp-row {
     display: flex;
-    padding: 12px 20px;
+    padding: 8px 15px; /* Reduced from 12px 20px */
     border-radius: 12px;
     background: white;
     border: 1px solid #f0f0f0;
-    font-size: 15px;
+    font-size: 14px; /* Slightly smaller font */
     align-items: center;
 }
+
 
 .comp-row.head {
     background: var(--primary);
@@ -658,8 +690,20 @@ textarea {
 }
 
 @media (max-width: 768px) {
-    .kshara-card-grid { grid-template-columns: 1fr; gap: 25px; }
-    .kshara-premium-card { padding: 30px 15px; border-radius: 20px; width: 100%; }
+    .kshara-card-grid { 
+        display: flex;
+        flex-direction: column;
+        gap: 40px; 
+    }
+    .kshara-visual {
+        order: 2; /* Move image and trust highlights to bottom on mobile */
+    }
+    .kshara-details {
+        order: 1; /* Move heading, video, table etc to top on mobile */
+        text-align: center;
+    }
+    .kshara-premium-card { padding: 30px 20px; border-radius: 20px; width: 100%; }
+
     
     .comparison-modern { padding: 20px 10px; margin-top: 25px; }
     .comp-row { padding: 12px 0px; font-size: 13px; gap: 5px; flex-wrap: wrap; }
@@ -897,14 +941,21 @@ textarea {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
     gap: 60px;
-    align-items: center;
+    align-items: center; /* Vertically center content */
+}
+
+
+.specialist-image {
+    text-align: center; /* Horizontally center */
 }
 
 .specialist-image img {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     border-radius: 30px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
+
 
 .section-tag {
     color: var(--primary);
@@ -913,6 +964,73 @@ textarea {
     letter-spacing: 1px;
     margin-bottom: 10px;
 }
+
+.specialist-details h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.doctor-bio {
+    font-size: 16px;
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+.doctor-bio p {
+    margin-bottom: 15px;
+}
+
+.specialist-videos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* Video Components */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.video-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: var(--transition);
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 177.77%; /* 9:16 for Shorts */
+    height: 0;
+    overflow: hidden;
+}
+
+.video-wrapper.short-video {
+    padding-bottom: 177.77%; /* Exact 9:16 ratio to show the full portrait thumbnail/video */
+}
+
+
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 20px;
+}
+
 
 @keyframes fadeInRight {
     from { opacity: 0; transform: translateX(30px); }
@@ -980,33 +1098,144 @@ textarea {
     background: #FFF9F7;
 }
 
-/* Why Choose Section */
-.why-grid {
+/* Featured Video Cards for Specialist Section */
+.featured-video-card {
+    background: white;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid transparent;
+}
+
+.featured-video-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 60px rgba(232, 93, 42, 0.15);
+    border-color: rgba(232, 93, 42, 0.3);
+}
+
+.featured-video-card .video-wrapper {
+    border-radius: 28px;
+    margin: 2px;
+}
+
+.specialist-featured-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 50px;
+    width: 100%;
+}
+
+@media (max-width: 992px) {
+    .specialist-featured-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+
+
+.why-grid {
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: center; /* Centers the second row visually */
+    gap: 20px;
+    margin-top: 50px;
 }
 
 .why-card {
+    flex: 1 1 calc(25% - 20px); /* 4 cards on first row, centers remaining 3 */
+    min-width: 280px; 
+    max-width: 320px;
     background: white;
-    padding: 40px;
+    padding: 30px 20px;
     border-radius: 20px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    transition: var(--transition);
+    transition: all 0.4s ease;
+    border: 1px solid rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     opacity: 0;
     transform: translateY(30px);
 }
 
-.why-card i {
-    font-size: 40px;
-    color: var(--primary);
+
+.why-card.reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.why-icon-box {
+    width: 60px;
+    height: 60px;
+    background: #FFF9F7;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.why-card i {
+    font-size: 28px;
+    color: var(--primary);
+}
+
+.why-card h4 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: var(--secondary);
+    line-height: 1.3;
+}
+
+.why-card p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--light-text);
+}
+
+.why-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(232, 93, 42, 0.1);
+    border-color: rgba(232, 93, 42, 0.2); /* Subtle orange glow */
+}
+
+.why-card:hover .why-icon-box {
+    background: var(--primary);
+}
+
+.why-card:hover i {
+    color: white;
+}
+
+@media (max-width: 1200px) {
+    .why-card {
+        flex: 1 1 calc(33.33% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .why-card {
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .why-card {
+        flex: 1 1 100%;
+    }
 }
 
 .why-card.reveal, 
 .root-cause-image.reveal, 
 .root-cause-content.reveal, 
+.herbal-card.reveal, 
+.kshara-karma-section.reveal,
+.diet-wrapper.reveal,
+.faq-item.reveal,
 .herbal-card.reveal, 
 .therapy-card-box.reveal, 
 .comfort-item.reveal, 
@@ -1014,9 +1243,10 @@ textarea {
 .diet-item.reveal, 
 .trust-card.reveal,
 .life-tip.reveal {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
+
 
 .root-cause-image, 
 .root-cause-content, 
@@ -1392,8 +1622,19 @@ textarea {
     .specialist-box-layout {
         grid-template-columns: 1fr;
         gap: 30px;
-        text-align: center;
+        text-align: center; /* Center bio and content on mobile */
     }
+
+
+    .specialist-videos {
+        grid-template-columns: 1fr;
+    }
+
+    .specialist-details h2 {
+        text-align: center; /* Center the doctor's name */
+    }
+
+
     
     .therapy-card-box {
         text-align: center;
@@ -1440,9 +1681,33 @@ textarea {
     .whatsapp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 25px; }
 }
 
-@media (max-width: 480px) {
-    .hero-btns { flex-direction: column; width: 100%; }
-    .hero-btns .btn { width: 100%; }
-    .btn { padding: 14px 24px; font-size: 15px; }
-    .trust-card { padding: 30px 20px; }
+/* Treatment Info Section */
+.treatment-info-section {
+    background-color: var(--bg-white);
+    padding: 80px 0;
 }
+
+.treatment-info-section h2 {
+    margin-bottom: 40px;
+}
+
+.video-subheading {
+    font-size: 24px;
+    color: var(--secondary);
+    font-weight: 700;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.video-subheading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary);
+}
+
