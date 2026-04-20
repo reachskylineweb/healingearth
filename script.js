@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 emailjs.sendForm('service_ui7w1ja', 'template_dz6vjmn', form)
                     .then(() => {
                         // Rule 4: Success Handling
-                        alert('Your consultation request has been submitted successfully! Our expert physicians will call you shortly.');
+                        alert('Your consultation request has been submitted successfully! Our team will call you shortly.');
                         form.reset(); // Rule 4: Form reset after success
                         submitBtn.innerText = originalText;
                         submitBtn.disabled = false;
