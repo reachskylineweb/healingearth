@@ -66,27 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // --- SCROLL REVEAL ANIMATIONS ---
-    const revealElements = () => {
-        const elements = document.querySelectorAll('.why-card, .root-cause-image, .root-cause-content, .herbal-card, .therapy-card-box, .comfort-item, .specialist-image, .diet-item, .trust-card, .life-tip, .kshara-premium-card');
-        const triggerBottom = window.innerHeight / 5 * 4.5; // Slightly higher trigger for smoother reveal
-
-        elements.forEach(el => {
-            const elTop = el.getBoundingClientRect().top;
-            if (elTop < triggerBottom) {
-                el.classList.add('reveal');
-                
-                // Specific transitions if not already in CSS
-                if(!el.classList.contains('why-card')) {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }
+    // --- SCROLL REVEAL ANIMATIONS (Intersection Observer) ---
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('reveal-active');
             }
         });
-    };
+    }, {
+        threshold: 0.15
+    });
 
-    window.addEventListener('scroll', revealElements);
-    revealElements(); // Run once on load
+    const revealElements = document.querySelectorAll('.reveal, .why-card, .herbal-card, .therapy-card-box, .comfort-item, .specialist-image, .diet-item, .trust-card, .life-tip, .kshara-premium-card, .cause-text-card');
+    revealElements.forEach(el => revealObserver.observe(el));
 
 
     // --- UNIVERSAL FORM SUBMISSION (EmailJS) ---
@@ -150,5 +142,109 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // --- VIDEO TICKER INTERACTION (Manual + Auto-Scroll) ---
+    const videoGrid = document.querySelector('.video-grid');
+    const videoCards = document.querySelectorAll('.video-card');
+    
+    let isAutoScrolling = true;
+    let scrollSpeed = 0.8; 
+    let isHovered = false;
+    let startX;
+
+    // Handle Playback Click
+    videoCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Prevent play if we were dragging
+            if (this.dataset.dragging === 'true') {
+                delete this.dataset.dragging;
+                return;
+            }
+
+            const videoId = this.getAttribute('data-video-id');
+            const wrapper = this.querySelector('.video-thumbnail-wrapper');
+            
+            if (videoId && wrapper) {
+                // STOP auto-scroll permanently on click
+                isAutoScrolling = false;
+
+                wrapper.innerHTML = `
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" 
+                            title="YouTube video player" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                `;
+                this.classList.add('is-playing');
+            }
+        });
+    });
+
+    // Auto-Scroll Loop
+    function autoScroll() {
+        if (isAutoScrolling && !isHovered) {
+            videoGrid.scrollLeft += scrollSpeed;
+            
+            // Infinite Loop Logic
+            const cardWidth = 280;
+            const gap = 25;
+            const loopThreshold = (cardWidth + gap) * 5;
+
+            if (videoGrid.scrollLeft >= loopThreshold) {
+                videoGrid.scrollLeft -= loopThreshold;
+            }
+        }
+        requestAnimationFrame(autoScroll);
+    }
+
+    // Interaction Listeners for Pause-on-Hover
+    videoGrid.addEventListener('mouseenter', () => isHovered = true);
+    videoGrid.addEventListener('mouseleave', () => isHovered = false);
+    
+    // Manual Drag/Scroll Detection
+    const handleDragStart = (e) => {
+        isHovered = true;
+        startX = (e.pageX || e.touches[0].pageX);
+    };
+
+    const handleDragMove = (e) => {
+        if (!startX) return;
+        const x = (e.pageX || e.touches[0].pageX);
+        const walk = (x - startX); 
+        
+        // If moved more than 10px, it's a drag
+        if (Math.abs(walk) > 10) {
+            isAutoScrolling = false; // Stop auto-scroll permanently
+            videoCards.forEach(card => card.dataset.dragging = 'true');
+        }
+    };
+
+    const handleDragEnd = () => {
+        isHovered = false;
+        startX = null;
+        setTimeout(() => {
+            videoCards.forEach(card => delete card.dataset.dragging);
+        }, 100);
+    };
+
+    videoGrid.addEventListener('mousedown', handleDragStart);
+    videoGrid.addEventListener('touchstart', handleDragStart, {passive: true});
+    
+    window.addEventListener('mousemove', handleDragMove);
+    videoGrid.addEventListener('touchmove', handleDragMove, {passive: true});
+    
+    window.addEventListener('mouseup', handleDragEnd);
+    window.addEventListener('touchend', handleDragEnd);
+
+    // Stop on mouse wheel as well
+    videoGrid.addEventListener('wheel', () => {
+        isAutoScrolling = false;
+    }, {passive: true});
+
+    // Start the loop
+    autoScroll();
 
 });
